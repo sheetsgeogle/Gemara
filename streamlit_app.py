@@ -2,6 +2,7 @@ import os
 import requests
 from PyPDF2 import PdfMerger
 import streamlit as st
+from io import BytesIO
 
 # Define the URL pattern
 url_pattern = "https://daf-yomi.com/Data/UploadedFiles/DY_Page/{}.pdf"
@@ -9,9 +10,7 @@ url_pattern = "https://daf-yomi.com/Data/UploadedFiles/DY_Page/{}.pdf"
 def download_and_merge_pdfs(start, end):
     # Initialize a PdfMerger object
     merger = PdfMerger()
-
-    # Get the path to the Downloads directory
-    downloads_path = os.path.join(os.path.expanduser("~"), "Downloads")
+    buffer = BytesIO()
 
     # Loop through the range and download each PDF
     for i in range(start, end + 1):
@@ -25,12 +24,16 @@ def download_and_merge_pdfs(start, end):
         else:
             st.warning(f"Failed to download {url}")
 
-    # Write out the merged PDF to the Downloads folder
-    output_filename = os.path.join(downloads_path, "merged_document.pdf")
-    merger.write(output_filename)
+    # Write out the merged PDF to the buffer
+    merger.write(buffer)
     merger.close()
+    buffer.seek(0)
+    
+    # Cleanup downloaded files
+    for i in range(start, end + 1):
+        os.remove(f"page_{i}.pdf")
 
-    return output_filename
+    return buffer
 
 st.title("PDF Merger")
 
@@ -41,5 +44,11 @@ if st.button("Download and Merge PDFs"):
     if start > end:
         st.error("Start page number must be less than or equal to end page number.")
     else:
-        output_filename = download_and_merge_pdfs(start, end)
-        st.success(f"Merged document saved as {output_filename}")
+        pdf_buffer = download_and_merge_pdfs(start, end)
+        st.success("PDFs have been merged successfully!")
+        st.download_button(
+            label="Download Merged PDF",
+            data=pdf_buffer,
+            file_name="merged_document.pdf",
+            mime="application/pdf"
+        )

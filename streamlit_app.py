@@ -1,5 +1,6 @@
 import streamlit as st
 import datetime
+import convertdate.hebrew as hebrew
 
 # Hebrew months
 months = ["ניסן", "אייר", "סיון", "תמוז", "אב", "אלול", 
@@ -29,4 +30,10 @@ if option == 'Hebrew':
 
 elif option == 'English':
     english_date = st.date_input('Select English Date', datetime.date.today())
-    st.write(f'Selected English Date: {english_date}')
+    
+    # Convert to Hebrew date
+    hebrew_date = hebrew.from_gregorian(english_date.year, english_date.month, english_date.day)
+    hebrew_day = days[hebrew_date[2] - 1]
+    hebrew_month = months[hebrew_date[1] - 1]
+    
+    st.write(f'Selected Hebrew Date: {hebrew_day} {hebrew_month}')

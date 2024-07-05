@@ -54,8 +54,8 @@ if full_hebrew_name:
                 reversed_name = reverse_hebrew(name)
                 c.setFont("SBL_Hebrew", 86)
                 c.setFillColor(HexColor("#be9a63"))
-                # Move the gold text up by 200 units from the previous position
-                c.drawCentredString(width / 2, height - 200, reversed_name)  # Adjusted y-coordinate
+                # Move the gold text up by an additional 50 units
+                c.drawCentredString(width / 2, height - 150, reversed_name)  # Further adjusted y-coordinate
 
                 c.save()
                 return pdf_file

@@ -1,27 +1,20 @@
 import streamlit as st
-from pyhebcal import *
-from pyhebcal.dates import HDate
+from hdate import HebrewDate
 
-def hebrew_date_picker(label, min_date=None, max_date=None):
-    min_date = HDate(min_date) if min_date else None
-    max_date = HDate(max_date) if max_date else None
+def hebrew_date_picker(label):
+    selected_date = st.date_input(f"Select {label} Date (Gregorian)")
 
-    # Generate a list of Hebrew months and days
-    hebrew_months = list(range(1, 13))
-    hebrew_days = list(range(1, 31))  # Hebrew calendar can have up to 30 days in a month
+    # Convert Gregorian date to Hebrew date
+    hebrew_date = HebrewDate.from_pydate(selected_date)
+    hebrew_day = hebrew_date.day
+    hebrew_month = hebrew_date.month_name()
+    hebrew_year = hebrew_date.year
 
-    selected_month = st.selectbox(f"Select {label} Month", hebrew_months)
-    selected_day = st.selectbox(f"Select {label} Day", hebrew_days)
-
-    # Convert selected Hebrew date to Gregorian for display purposes
-    selected_hebrew_date = HDate(selected_day, selected_month)
-    selected_gregorian_date = selected_hebrew_date.to_pydate()
-
-    st.write(f"Selected {label} Date (Hebrew): {selected_hebrew_date}")
-    st.write(f"Selected {label} Date (Gregorian): {selected_gregorian_date}")
+    st.write(f"Selected {label} Date (Gregorian): {selected_date}")
+    st.write(f"Selected {label} Date (Hebrew): {hebrew_day} {hebrew_month} {hebrew_year} AM")
 
 # Streamlit app
 st.title("Hebrew Date Picker")
 
-st.write("Select a Hebrew date:")
+st.write("Select a Gregorian date:")
 hebrew_date_picker("Start")

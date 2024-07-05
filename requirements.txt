@@ -1,3 +1,2 @@
-requests
-PyPDF2
-streamlit
+streamlit 
+hdate

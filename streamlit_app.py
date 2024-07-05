@@ -51,28 +51,35 @@ elif option == 'English':
 if full_hebrew_name:
     def download_font(url, filename):
         try:
-            if not os.path.exists(os.path.dirname(filename)):
-                os.makedirs(os.path.dirname(filename))
-                
             response = requests.get(url)
             response.raise_for_status()  # Raise an exception for HTTP errors
+
+            # Ensure the directory exists
+            os.makedirs(os.path.dirname(filename), exist_ok=True)
+            
+            # Save the font file
             with open(filename, "wb") as f:
                 f.write(response.content)
-            st.info("Font downloaded successfully.")
+            st.info(f"Font downloaded and saved to {filename}.")
         except requests.RequestException as e:
             st.error(f"Failed to download font: {e}")
         except IOError as e:
             st.error(f"Failed to save font file: {e}")
 
     def create_pdf(name):
-        pdf_file = "Hebrew_Name.pdf"  # Change path to local or allowed directory
+        pdf_file = "Hebrew_Name.pdf"  # Use a relative path or an appropriate location
+        font_path = "SBL_Hbrw.ttf"     # Use a relative path or an appropriate location
         try:
             c = canvas.Canvas(pdf_file, pagesize=letter)
             width, height = letter
 
             # Register the SBL Hebrew font
-            font_path = "SBL_Hbrw.ttf"  # Change path to local or allowed directory
-            pdfmetrics.registerFont(TTFont('SBL_Hebrew', font_path))
+            if os.path.exists(font_path):
+                pdfmetrics.registerFont(TTFont('SBL_Hebrew', font_path))
+                st.info(f"Font registered from {font_path}.")
+            else:
+                st.error(f"Font file not found at {font_path}.")
+                return None
 
             # Draw the black text
             c.setFont("SBL_Hebrew", 41)
@@ -91,7 +98,7 @@ if full_hebrew_name:
 
     # URL of the SBL Hebrew font on GitHub
     font_url = "https://github.com/sheetsgeogle/Gemara/raw/main/SBL_Hbrw%20(1).ttf"
-    font_path = "SBL_Hbrw.ttf"  # Change path to local or allowed directory
+    font_path = "SBL_Hbrw.ttf"  # Use a relative path or an appropriate location
     download_font(font_url, font_path)
 
     pdf_file = create_pdf(full_hebrew_name)

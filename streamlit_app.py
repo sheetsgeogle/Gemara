@@ -1,10 +1,14 @@
 import streamlit as st
 import streamlit.components.v1 as components
+from streamlit_javascript import st_javascript
 
 st.title("Hebrew Date Picker")
 
-# Render the HTML file
-components.iframe(src="hebrew_date_picker.html", height=500)
+# URL to the raw HTML file on GitHub
+html_url = "https://raw.githubusercontent.com/sheetsgeogle/Gemara/main/hebrew_date_picker.html"
+
+# Render the HTML file from GitHub
+components.iframe(html_url, height=500)
 
 # JavaScript to receive the selected date
 selected_date = st_javascript("""

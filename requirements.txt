@@ -1,2 +1,3 @@
 streamlit 
 hdate
+streamlit_javascript

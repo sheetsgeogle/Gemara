@@ -6,6 +6,8 @@ from reportlab.pdfbase.ttfonts import TTFont
 from reportlab.pdfbase import pdfmetrics
 import requests
 import os
+from io import BytesIO
+from PIL import Image
 
 st.title("Generate PDF with Hebrew Name")
 
@@ -29,6 +31,18 @@ if full_hebrew_name:
             st.error(f"Failed to download font: {e}")
         except IOError as e:
             st.error(f"Failed to save font file: {e}")
+
+    def download_image(url):
+        try:
+            response = requests.get(url)
+            response.raise_for_status()  # Raise an exception for HTTP errors
+            image = Image.open(BytesIO(response.content))
+            return image
+        except requests.RequestException as e:
+            st.error(f"Failed to download image: {e}")
+        except IOError as e:
+            st.error(f"Failed to open image file: {e}")
+        return None
 
     def reverse_hebrew(text):
         return text[::-1]
@@ -54,8 +68,15 @@ if full_hebrew_name:
                 reversed_name = reverse_hebrew(name)
                 c.setFont("SBL_Hebrew", 86)
                 c.setFillColor(HexColor("#be9a63"))
-                # Move the gold text up by 20 units
                 c.drawCentredString(width / 2, height - 180, reversed_name)  # Adjusted y-coordinate
+
+                # Download and draw the swirl border image
+                image_url = "https://github.com/sheetsgeogle/Gemara/raw/main/test2.png"
+                image = download_image(image_url)
+                if image:
+                    image_path = "swirl_border.png"
+                    image.save(image_path)
+                    c.drawImage(image_path, width / 2 - 200, height - 300, width=400, height=150)  # Adjusted position and size
 
                 c.save()
                 return pdf_file

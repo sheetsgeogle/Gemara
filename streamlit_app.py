@@ -14,8 +14,8 @@ days = ["א", "ב", "ג", "ד", "ה", "ו", "ז", "ח", "ט",
 
 st.title("Select Date")
 
-# Full Hebrew Name input
-full_hebrew_name = st.text_input("Full Hebrew Name")
+# Full Hebrew Name input with placeholder
+full_hebrew_name = st.text_input("Full Hebrew Name", placeholder="מנחם מענדל")
 
 # Options for Hebrew and English
 option = st.radio("Select Date Type", ('Hebrew', 'English'))

@@ -14,8 +14,8 @@ days = ["א", "ב", "ג", "ד", "ה", "ו", "ז", "ח", "ט",
 
 st.title("Select Date")
 
-# Name input
-name = st.text_input("Name")
+# Full Hebrew Name input
+full_hebrew_name = st.text_input("Full Hebrew Name")
 
 # Options for Hebrew and English
 option = st.radio("Select Date Type", ('Hebrew', 'English'))
@@ -29,7 +29,7 @@ if option == 'Hebrew':
     with col2:
         day = st.selectbox('Day', days)
 
-    st.write(f'Name: {name}')
+    st.write(f'Full Hebrew Name: {full_hebrew_name}')
     st.write(f'Selected Hebrew Date: {day} {month}')
 
 elif option == 'English':
@@ -40,5 +40,5 @@ elif option == 'English':
     hebrew_day = days[hebrew_date[2] - 1]
     hebrew_month = months[hebrew_date[1] - 1]
 
-    st.write(f'Name: {name}')
+    st.write(f'Full Hebrew Name: {full_hebrew_name}')
     st.write(f'Selected Hebrew Date: {hebrew_day} {hebrew_month}')

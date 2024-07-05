@@ -70,37 +70,38 @@ if full_hebrew_name:
         return text[::-1]
 
     def create_pdf(name):
-        pdf_file = "Hebrew_Name.pdf"  # Use a relative path or an appropriate location
-        font_path = "SBL_Hbrw (1).ttf"  # Use a relative path or an appropriate location
-        try:
-            if os.path.exists(font_path):
-                c = canvas.Canvas(pdf_file, pagesize=letter)
-                width, height = letter
+    pdf_file = "Hebrew_Name.pdf"  # Use a relative path or an appropriate location
+    font_path = "SBL_Hbrw (1).ttf"  # Use a relative path or an appropriate location
+    try:
+        if os.path.exists(font_path):
+            c = canvas.Canvas(pdf_file, pagesize=letter)
+            width, height = letter
 
-                # Register the SBL Hebrew font
-                pdfmetrics.registerFont(TTFont('SBL_Hebrew', font_path))
-                st.info(f"Font registered from {font_path}.")
+            # Register the SBL Hebrew font
+            pdfmetrics.registerFont(TTFont('SBL_Hebrew', font_path))
+            st.info(f"Font registered from {font_path}.")
 
-                # Draw the black text
-                c.setFont("SBL_Hebrew", 41)
-                black_text = "םשה תויתוא לש תינשמה יקרפ"
-                c.drawCentredString(width / 2, height - 100, black_text)
+            # Draw the black text
+            c.setFont("SBL_Hebrew", 41)
+            black_text = "םשה תויתוא לש תינשמה יקרפ"
+            c.drawCentredString(width / 2, height - 100, black_text)
 
-                # Draw the gold text closer to the black text
-                reversed_name = reverse_hebrew(name)
-                c.setFont("SBL_Hebrew", 86)
-                c.setFillColor(HexColor("#be9a63"))
-                # Adjust the y-coordinate to move the gold text closer to the black text
-                c.drawCentredString(width / 2, height - 150, reversed_name)  # Reduced y-coordinate for closer positioning
+            # Draw the gold text closer to the black text
+            reversed_name = reverse_hebrew(name)
+            c.setFont("SBL_Hebrew", 86)
+            c.setFillColor(HexColor("#be9a63"))
+            # Adjust the y-coordinate to move the gold text moderately closer to the black text
+            c.drawCentredString(width / 2, height - 130, reversed_name)  # Moderately reduced y-coordinate
 
-                c.save()
-                return pdf_file
-            else:
-                st.error(f"Font file not found at {font_path}.")
-                return None
-        except Exception as e:
-            st.error(f"An error occurred while creating the PDF: {e}")
+            c.save()
+            return pdf_file
+        else:
+            st.error(f"Font file not found at {font_path}.")
             return None
+    except Exception as e:
+        st.error(f"An error occurred while creating the PDF: {e}")
+        return None
+
 
     # URL of the SBL Hebrew font on GitHub
     font_url = "https://github.com/sheetsgeogle/Gemara/raw/main/SBL_Hbrw%20(1).ttf"

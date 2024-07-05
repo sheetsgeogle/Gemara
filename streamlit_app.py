@@ -28,7 +28,7 @@ if st.button("Convert to Gregorian Date"):
         st.write("Error in conversion:", e)
 
 # Allow user to input a Hebrew date in text format
-hebrew_date_text = st.text_input("Enter Hebrew date (e.g., כ' בטבת תשפ"ד)")
+hebrew_date_text = st.text_input("Enter Hebrew date (e.g., כ\' בטבת תשפ\"ד)")
 if st.button("Convert Text to Gregorian Date"):
     try:
         input_hebrew_date_text = HDate.from_hebrew_string(hebrew_date_text)

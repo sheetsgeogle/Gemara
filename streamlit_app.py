@@ -91,30 +91,8 @@ if full_hebrew_name:
                 c.setFont("SBL_Hebrew", 86)
                 c.setFillColor(HexColor("#be9a63"))
                 # Adjust the y-coordinate to move the gold text moderately closer to the black text
-                c.drawCentredString(width / 2, height - 120, reversed_name)  # Fine-tuned y-coordinate
+                c.drawCentredString(width / 2, height - 130, reversed_name)  # Adjusted y-coordinate
 
                 c.save()
                 return pdf_file
             else:
-                st.error(f"Font file not found at {font_path}.")
-                return None
-        except Exception as e:
-            st.error(f"An error occurred while creating the PDF: {e}")
-            return None
-
-    # URL of the SBL Hebrew font on GitHub
-    font_url = "https://github.com/sheetsgeogle/Gemara/raw/main/SBL_Hbrw%20(1).ttf"
-    font_path = "SBL_Hbrw (1).ttf"  # Use a relative path or an appropriate location
-    download_font(font_url, font_path)
-
-    # Check if the font file exists after download
-    if os.path.exists(font_path):
-        pdf_file = create_pdf(full_hebrew_name)
-        if pdf_file:
-            st.write(f"Generated PDF for: {full_hebrew_name}")
-            with open(pdf_file, "rb") as f:
-                st.download_button(label="Download PDF", file_name="Hebrew_Name.pdf", data=f, mime="application/pdf")
-    else:
-        st.error(f"Font file not found after download attempt: {font_path}.")
-else:
-    st.write("Please enter a Hebrew name to generate the PDF.")

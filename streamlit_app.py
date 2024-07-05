@@ -86,11 +86,12 @@ if full_hebrew_name:
                 black_text = "םשה תויתוא לש תינשמה יקרפ"
                 c.drawCentredString(width / 2, height - 100, black_text)
 
-                # Draw the gold text
+                # Draw the gold text closer to the black text
                 reversed_name = reverse_hebrew(name)
                 c.setFont("SBL_Hebrew", 86)
                 c.setFillColor(HexColor("#be9a63"))
-                c.drawCentredString(width / 2, height - 200, reversed_name)
+                # Adjust the y-coordinate to move the gold text closer to the black text
+                c.drawCentredString(width / 2, height - 150, reversed_name)  # Reduced y-coordinate for closer positioning
 
                 c.save()
                 return pdf_file

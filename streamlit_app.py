@@ -29,7 +29,6 @@ if option == 'Hebrew':
     with col2:
         day = st.selectbox('Day', days)
 
-    st.write(f'Full Hebrew Name: {full_hebrew_name}')
     st.write(f'Selected Hebrew Date: {day} {month}')
 
 elif option == 'English':
@@ -40,5 +39,4 @@ elif option == 'English':
     hebrew_day = days[hebrew_date[2] - 1]
     hebrew_month = months[hebrew_date[1] - 1]
 
-    st.write(f'Full Hebrew Name: {full_hebrew_name}')
     st.write(f'Selected Hebrew Date: {hebrew_day} {hebrew_month}')

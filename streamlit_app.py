@@ -93,3 +93,5 @@ if full_hebrew_name:
             st.download_button(label="Download PDF", file_name="Hebrew_Name.pdf", data=f, mime="application/pdf")
     except Exception as e:
         st.error(f"An error occurred while generating the PDF: {e}")
+else:
+    st.write("Please enter a Hebrew name to generate the PDF.")

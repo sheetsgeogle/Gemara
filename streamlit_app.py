@@ -1,12 +1,11 @@
 import streamlit as st
 import datetime
-from hdate import HDate, HDateFormatter
+from hdate import HDate
 
 # Convert Gregorian date to Hebrew date
 def gregorian_to_hebrew(date):
     hebrew_date = HDate(date)
-    formatter = HDateFormatter(hebrew_date)
-    return formatter.format('l, j b Y')
+    return hebrew_date.to_hebrew()
 
 # Streamlit app
 st.title("Hebrew Date Picker")

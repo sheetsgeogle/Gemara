@@ -68,7 +68,7 @@ if full_hebrew_name:
 
     def create_pdf(name):
         pdf_file = "Hebrew_Name.pdf"  # Use a relative path or an appropriate location
-        font_path = "SBL_Hbrw.ttf"     # Use a relative path or an appropriate location
+        font_path = "SBL_Hbrw (1).ttf"  # Use a relative path or an appropriate location
         try:
             c = canvas.Canvas(pdf_file, pagesize=letter)
             width, height = letter
@@ -98,7 +98,7 @@ if full_hebrew_name:
 
     # URL of the SBL Hebrew font on GitHub
     font_url = "https://github.com/sheetsgeogle/Gemara/raw/main/SBL_Hbrw%20(1).ttf"
-    font_path = "SBL_Hbrw.ttf"  # Use a relative path or an appropriate location
+    font_path = "SBL_Hbrw (1).ttf"  # Use a relative path or an appropriate location
     download_font(font_url, font_path)
 
     pdf_file = create_pdf(full_hebrew_name)

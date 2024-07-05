@@ -80,7 +80,7 @@ if full_hebrew_name:
 
                 # Draw the black text
                 c.setFont("SBL_Hebrew", 41)
-                c.drawString(100, height - 100, "פרקי המשנית של אותיות השם")
+                c.drawString(100, height - 100, "םשה תויתוא לש תינשמה יקרפ")
 
                 # Draw the gold text
                 c.setFont("SBL_Hebrew", 86)

@@ -2,3 +2,4 @@ streamlit
 convertdate
 reportlab
 requests
+pillow

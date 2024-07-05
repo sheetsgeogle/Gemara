@@ -11,26 +11,22 @@ days = ["א", "ב", "ג", "ד", "ה", "ו", "ז", "ח", "ט",
         "יז", "יח", "יט", "כ", "כא", "כב", "כג", 
         "כד", "כה", "כו", "כז", "כח", "כט", "ל"]
 
-st.title("Select Hebrew Date")
+st.title("Select Date")
 
-# Buttons for English and Hebrew date
-col1, col2 = st.columns(2)
+# Options for Hebrew and English
+option = st.radio("Select Date Type", ('Hebrew', 'English'))
 
-with col1:
-    if st.button('English Date'):
-        english_date = st.date_input('Select English Date', datetime.date.today())
-        st.write(f'Selected English Date: {english_date}')
+if option == 'Hebrew':
+    col1, col2 = st.columns(2)
 
-with col2:
-    st.button('Hebrew Date')
+    with col1:
+        month = st.selectbox('Month', months)
 
-# Dropdowns for Hebrew month and day
-col3, col4 = st.columns(2)
+    with col2:
+        day = st.selectbox('Day', days)
 
-with col3:
-    month = st.selectbox('Month', months)
+    st.write(f'Selected Hebrew Date: {day} {month}')
 
-with col4:
-    day = st.selectbox('Day', days)
-
-st.write(f'Selected Hebrew Date: {day} {month}')
+elif option == 'English':
+    english_date = st.date_input('Select English Date', datetime.date.today())
+    st.write(f'Selected English Date: {english_date}')

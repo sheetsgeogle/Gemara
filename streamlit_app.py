@@ -50,48 +50,54 @@ elif option == 'English':
 
 if full_hebrew_name:
     def download_font(url, filename):
-        if not os.path.exists(filename):
+        try:
+            if not os.path.exists(os.path.dirname(filename)):
+                os.makedirs(os.path.dirname(filename))
+                
             response = requests.get(url)
-            if response.status_code == 200:
-                with open(filename, "wb") as f:
-                    f.write(response.content)
-            else:
-                st.error("Failed to download font. Please check the URL or your internet connection.")
-        else:
-            st.info("Font already downloaded.")
+            response.raise_for_status()  # Raise an exception for HTTP errors
+            with open(filename, "wb") as f:
+                f.write(response.content)
+            st.info("Font downloaded successfully.")
+        except requests.RequestException as e:
+            st.error(f"Failed to download font: {e}")
+        except IOError as e:
+            st.error(f"Failed to save font file: {e}")
 
     def create_pdf(name):
         pdf_file = "/mnt/data/Hebrew_Name.pdf"
-        c = canvas.Canvas(pdf_file, pagesize=letter)
-        width, height = letter
+        try:
+            c = canvas.Canvas(pdf_file, pagesize=letter)
+            width, height = letter
 
-        # Register the SBL Hebrew font
-        font_path = "/mnt/data/SBL_Hbrw.ttf"
-        pdfmetrics.registerFont(TTFont('SBL_Hebrew', font_path))
+            # Register the SBL Hebrew font
+            font_path = "/mnt/data/SBL_Hbrw.ttf"
+            pdfmetrics.registerFont(TTFont('SBL_Hebrew', font_path))
 
-        # Draw the black text
-        c.setFont("SBL_Hebrew", 41)
-        c.drawString(100, height - 100, "פרקי המשנית של אותיות השם")
+            # Draw the black text
+            c.setFont("SBL_Hebrew", 41)
+            c.drawString(100, height - 100, "פרקי המשנית של אותיות השם")
 
-        # Draw the gold text
-        c.setFont("SBL_Hebrew", 86)
-        c.setFillColor(HexColor("#be9a63"))
-        c.drawString(100, height - 200, name)
+            # Draw the gold text
+            c.setFont("SBL_Hebrew", 86)
+            c.setFillColor(HexColor("#be9a63"))
+            c.drawString(100, height - 200, name)
 
-        c.save()
-        return pdf_file
+            c.save()
+            return pdf_file
+        except Exception as e:
+            st.error(f"An error occurred while creating the PDF: {e}")
+            return None
 
     # URL of the SBL Hebrew font on GitHub
     font_url = "https://github.com/sheetsgeogle/Gemara/raw/main/SBL_Hbrw%20(1).ttf"
     font_path = "/mnt/data/SBL_Hbrw.ttf"
     download_font(font_url, font_path)
 
-    try:
-        pdf_file = create_pdf(full_hebrew_name)
+    pdf_file = create_pdf(full_hebrew_name)
+    if pdf_file:
         st.write(f"Generated PDF for: {full_hebrew_name}")
         with open(pdf_file, "rb") as f:
             st.download_button(label="Download PDF", file_name="Hebrew_Name.pdf", data=f, mime="application/pdf")
-    except Exception as e:
-        st.error(f"An error occurred while generating the PDF: {e}")
 else:
     st.write("Please enter a Hebrew name to generate the PDF.")

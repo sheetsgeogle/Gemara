@@ -66,6 +66,9 @@ if full_hebrew_name:
         except IOError as e:
             st.error(f"Failed to save font file: {e}")
 
+    def reverse_hebrew(text):
+        return text[::-1]
+
     def create_pdf(name):
         pdf_file = "Hebrew_Name.pdf"  # Use a relative path or an appropriate location
         font_path = "SBL_Hbrw (1).ttf"  # Use a relative path or an appropriate location
@@ -83,9 +86,10 @@ if full_hebrew_name:
                 c.drawString(100, height - 100, "םשה תויתוא לש תינשמה יקרפ")
 
                 # Draw the gold text
+                reversed_name = reverse_hebrew(name)
                 c.setFont("SBL_Hebrew", 86)
                 c.setFillColor(HexColor("#be9a63"))
-                c.drawString(100, height - 200, name)
+                c.drawString(100, height - 200, reversed_name)
 
                 c.save()
                 return pdf_file

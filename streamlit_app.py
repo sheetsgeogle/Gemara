@@ -83,13 +83,14 @@ if full_hebrew_name:
 
                 # Draw the black text
                 c.setFont("SBL_Hebrew", 41)
-                c.drawString(100, height - 100, "םשה תויתוא לש תינשמה יקרפ")
+                black_text = "םשה תויתוא לש תינשמה יקרפ"
+                c.drawCentredString(width / 2, height - 100, black_text)
 
                 # Draw the gold text
                 reversed_name = reverse_hebrew(name)
                 c.setFont("SBL_Hebrew", 86)
                 c.setFillColor(HexColor("#be9a63"))
-                c.drawString(100, height - 200, reversed_name)
+                c.drawCentredString(width / 2, height - 200, reversed_name)
 
                 c.save()
                 return pdf_file

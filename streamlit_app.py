@@ -91,7 +91,7 @@ if full_hebrew_name:
                 c.setFont("SBL_Hebrew", 86)
                 c.setFillColor(HexColor("#be9a63"))
                 # Adjust the y-coordinate to move the gold text moderately closer to the black text
-                c.drawCentredString(width / 2, height - 130, reversed_name)  # Moderately reduced y-coordinate
+                c.drawCentredString(width / 2, height - 120, reversed_name)  # Adjusted y-coordinate
 
                 c.save()
                 return pdf_file

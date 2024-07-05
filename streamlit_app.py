@@ -65,13 +65,13 @@ if full_hebrew_name:
             st.error(f"Failed to save font file: {e}")
 
     def create_pdf(name):
-        pdf_file = "/mnt/data/Hebrew_Name.pdf"
+        pdf_file = "Hebrew_Name.pdf"  # Change path to local or allowed directory
         try:
             c = canvas.Canvas(pdf_file, pagesize=letter)
             width, height = letter
 
             # Register the SBL Hebrew font
-            font_path = "/mnt/data/SBL_Hbrw.ttf"
+            font_path = "SBL_Hbrw.ttf"  # Change path to local or allowed directory
             pdfmetrics.registerFont(TTFont('SBL_Hebrew', font_path))
 
             # Draw the black text
@@ -91,7 +91,7 @@ if full_hebrew_name:
 
     # URL of the SBL Hebrew font on GitHub
     font_url = "https://github.com/sheetsgeogle/Gemara/raw/main/SBL_Hbrw%20(1).ttf"
-    font_path = "/mnt/data/SBL_Hbrw.ttf"
+    font_path = "SBL_Hbrw.ttf"  # Change path to local or allowed directory
     download_font(font_url, font_path)
 
     pdf_file = create_pdf(full_hebrew_name)

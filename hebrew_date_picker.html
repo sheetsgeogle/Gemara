@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="he">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+    <script src="https://rawgit.com/xsoh/moment-hijri/master/dist/moment-hijri.js"></script>
+    <script>
+        $(function() {
+            $("#datepicker").datepicker($.datepicker.regional["he"]);
+        });
+        function sendDate() {
+            const date = document.getElementById("datepicker").value;
+            window.parent.postMessage(date, "*");
+        }
+    </script>
+</head>
+<body>
+    <input type="text" id="datepicker" onchange="sendDate()">
+</body>
+</html>

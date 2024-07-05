@@ -51,7 +51,6 @@ elif option == 'English':
 if full_hebrew_name:
     def download_font(url, filename):
         try:
-            # Download the font file
             response = requests.get(url)
             response.raise_for_status()  # Raise an exception for HTTP errors
             
@@ -102,10 +101,14 @@ if full_hebrew_name:
     font_path = "SBL_Hbrw (1).ttf"  # Use a relative path or an appropriate location
     download_font(font_url, font_path)
 
-    pdf_file = create_pdf(full_hebrew_name)
-    if pdf_file:
-        st.write(f"Generated PDF for: {full_hebrew_name}")
-        with open(pdf_file, "rb") as f:
-            st.download_button(label="Download PDF", file_name="Hebrew_Name.pdf", data=f, mime="application/pdf")
+    # Check if the font file exists after download
+    if os.path.exists(font_path):
+        pdf_file = create_pdf(full_hebrew_name)
+        if pdf_file:
+            st.write(f"Generated PDF for: {full_hebrew_name}")
+            with open(pdf_file, "rb") as f:
+                st.download_button(label="Download PDF", file_name="Hebrew_Name.pdf", data=f, mime="application/pdf")
+    else:
+        st.error(f"Font file not found after download attempt: {font_path}.")
 else:
     st.write("Please enter a Hebrew name to generate the PDF.")

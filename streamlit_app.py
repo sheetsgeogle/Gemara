@@ -19,10 +19,11 @@ if full_hebrew_name:
         try:
             response = requests.get(url)
             response.raise_for_status()  # Raise an exception for HTTP errors
-            
-            # Ensure the directory exists
-            os.makedirs(os.path.dirname(filename), exist_ok=True)
-            
+
+            directory = os.path.dirname(filename)
+            if directory:
+                os.makedirs(directory, exist_ok=True)
+
             # Save the font file
             with open(filename, "wb") as f:
                 f.write(response.content)
@@ -74,7 +75,7 @@ if full_hebrew_name:
                     image_path = "swirl_border.png"
                     image.save(image_path)
                     # Resize and position the image
-                    c.drawImage(image_path, width / 2 - 10, height - 230, width=20, height=10)  # Slightly larger size and adjusted position
+                    c.drawImage(image_path, width / 2 - 10, height - 230, width=0.3 * width, height=0.1 * height)
 
                 c.save()
                 return pdf_file

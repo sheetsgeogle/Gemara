@@ -3,3 +3,4 @@ convertdate
 reportlab
 requests
 pillow
+pdf2image

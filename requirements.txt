@@ -4,3 +4,4 @@ reportlab
 requests
 pillow
 pdf2image
+poppler-utils

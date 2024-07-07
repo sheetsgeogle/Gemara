@@ -25,13 +25,22 @@ if full_hebrew_name:
             
             # Save the font file
             with open(filename, "wb") as f:
-          
+                f.write(response.content)
+            st.info(f"Font downloaded and saved to {filename}.")
+        except requests.RequestException as e:
+            st.error(f"Failed to download font: {e}")
 
     def download_image(url):
         try:
             response = requests.get(url)
             response.raise_for_status()  # Raise an exception for HTTP errors
             image = Image.open(BytesIO(response.content))
+            return image
+        except requests.RequestException as e:
+            st.error(f"Failed to download image: {e}")
+        except IOError as e:
+            st.error(f"Failed to open image file: {e}")
+        return None
 
     def reverse_hebrew(text):
         return text[::-1]
@@ -46,7 +55,6 @@ if full_hebrew_name:
 
                 # Register the SBL Hebrew font
                 pdfmetrics.registerFont(TTFont('SBL_Hebrew', font_path))
-                st.info(f"Font registered from {font_path}.")
 
                 # Draw the black text
                 c.setFont("SBL_Hebrew", 41)

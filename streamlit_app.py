@@ -94,15 +94,7 @@ if full_hebrew_name:
     if os.path.exists(font_path):
         pdf_file = create_pdf(full_hebrew_name)
         if pdf_file:
-            # Convert the first page of the PDF to an image (error handling if poppler-utils is not installed)
-            try:
-                from pdf2image import convert_from_path
-                images = convert_from_path(pdf_file, first_page=0, last_page=1)
-                if images:
-                    st.image(images[0], caption='PDF Preview', use_column_width=True)
-            except ImportError:
-                st.warning("Poppler-utils is not installed. Please install it to enable PDF preview.")
-
+            st.write(f"Generated PDF for: {full_hebrew_name}")
             with open(pdf_file, "rb") as f:
                 st.download_button(label="Download PDF", file_name="Hebrew_Name.pdf", data=f, mime="application/pdf")
     else:

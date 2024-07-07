@@ -89,7 +89,7 @@ font_url = "https://github.com/sheetsgeogle/Gemara/raw/main/SBL_Hbrw%20(1).ttf"
 font_path = "SBL_Hbrw (1).ttf"  # Use a relative path or an appropriate location
 download_font(font_url, font_path)
 
-if st.button("Generate PDF"):
+if st.button("Download PDF"):
     # Check if the font file exists after download
     if os.path.exists(font_path):
         if full_hebrew_name:

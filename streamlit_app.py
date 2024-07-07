@@ -74,7 +74,7 @@ if full_hebrew_name:
                     image_path = "swirl_border.png"
                     image.save(image_path)
                     # Resize and position the image
-                    c.drawImage(image_path, width / 2 - 0.03 * width, height - 0.3 * height, width=0.06 * width, height=0.02 * height, mask='auto')
+                    c.drawImage(image_path, width / 2 - 0.025 * width, height - 0.3 * height, width=0.05 * width, height=0.015 * height, mask='auto')
 
                 c.save()
                 return pdf_file

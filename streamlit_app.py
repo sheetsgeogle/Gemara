@@ -34,7 +34,7 @@ if full_hebrew_name:
         try:
             response = requests.get(url)
             response.raise_for_status()  # Raise an exception for HTTP errors
-            image = Image.open(BytesIO(response.content))
+            image = Image.open(BytesIO(response.content)).convert("RGBA")
             return image
         except requests.RequestException as e:
             st.error(f"Failed to download image: {e}")
@@ -74,7 +74,7 @@ if full_hebrew_name:
                     image_path = "swirl_border.png"
                     image.save(image_path)
                     # Resize and position the image
-                    c.drawImage(image_path, width / 2 - 10, height - 230, width=0.3 * width, height=0.1 * height)
+                    c.drawImage(image_path, width / 2 - 0.15 * width, height - 0.4 * height, width=0.3 * width, height=0.1 * height, mask='auto')
 
                 c.save()
                 return pdf_file

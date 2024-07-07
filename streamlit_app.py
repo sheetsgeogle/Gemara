@@ -78,7 +78,7 @@ if full_hebrew_name:
         try:
             if os.path.exists(font_path):
                 c = canvas.Canvas(pdf_file, pagesize=letter)
-                width, height = letter
+                page_width, page_height = letter  # Correct reference to letter
 
                 # Register the SBL Hebrew font
                 pdfmetrics.registerFont(TTFont('SBL_Hebrew', font_path))
@@ -86,13 +86,13 @@ if full_hebrew_name:
                 # Draw the black text
                 c.setFont("SBL_Hebrew", 41)
                 black_text = "םשה תויתוא לש תינשמה יקרפ"
-                c.drawCentredString(width / 2, height - 100, black_text)
+                c.drawCentredString(page_width / 2, page_height - 100, black_text)
 
                 # Draw the gold text adjusted upwards
                 reversed_name = reverse_hebrew(name)
                 c.setFont("SBL_Hebrew", 86)
                 c.setFillColor(HexColor("#be9a63"))
-                c.drawCentredString(width / 2, height - 180, reversed_name)  # Adjusted y-coordinate
+                c.drawCentredString(page_width / 2, page_height - 180, reversed_name)  # Adjusted y-coordinate
 
                 # Download and draw the swirl border image
                 image_url = "https://github.com/sheetsgeogle/Gemara/raw/main/test2.png"
@@ -101,13 +101,13 @@ if full_hebrew_name:
                     image_path = "swirl_border.png"
                     image.save(image_path)
                     # Resize and position the image
-                    c.drawImage(image_path, width / 2 - 0.025 * width, height - 0.3 * height, width=0.05 * width, height=0.015 * height, mask='auto')
+                    c.drawImage(image_path, page_width / 2 - 0.025 * page_width, page_height - 0.3 * page_height, width=0.05 * page_width, height=0.015 * page_height, mask='auto')
 
                 # Draw the box with Hebrew letters and display texts
                 box_width = 4 * inch
                 box_height = len(hebrew_letters) * 0.5 * inch
-                box_x = width / 2 - box_width / 2
-                box_y = height - 0.45 * height - box_height
+                box_x = page_width / 2 - box_width / 2
+                box_y = page_height - 0.45 * page_height - box_height
                 c.setStrokeColor(HexColor("#000000"))
                 c.setFillColor(HexColor("#f0f0f0"))
                 c.rect(box_x, box_y, box_width, box_height, fill=1)

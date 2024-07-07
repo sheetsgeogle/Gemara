@@ -4,6 +4,7 @@ from reportlab.lib.pagesizes import letter
 from reportlab.lib.colors import HexColor
 from reportlab.pdfbase.ttfonts import TTFont
 from reportlab.pdfbase import pdfmetrics
+from reportlab.lib.units import inch
 import requests
 import os
 from io import BytesIO
@@ -13,6 +14,32 @@ st.title("Generate PDF with Hebrew Name")
 
 # Full Hebrew Name input with placeholder
 full_hebrew_name = st.text_input("Full Hebrew Name", placeholder="מנחם מענדל")
+
+# Hebrew letters with display text
+hebrew_letters = [
+    ("ברכות פרק ה", "א"),
+    ("תענית פרק ד", "ב"),
+    ("בבא בתרא פרק ג", "ג"),
+    ("סנהדרין פרק א", "ד"),
+    ("ברכות פרק ב", "ה"),
+    ("מועד קטן פרק ג", "ו"),
+    ("טהרות פרק ט", "ז"),
+    ("שבת פרק כב", "ח"),
+    ("יומא פרק ד", "ט"),
+    ("ראש השנה פרק ד", "י"),
+    ("ברכות פרק ו", "כ"),
+    ("סוכה פרק ד", "ל"),
+    ("ברכות פרק א", "מ"),
+    ("שבת פרק כא", "נ"),
+    ("סוכה פרק א", "ס"),
+    ("פסחים פרק י", "ע"),
+    ("חלה פרק ב", "פ"),
+    ("פרה פרק ט", "צ"),
+    ("נדרים פרק ט", "ק"),
+    ("שבת פרק יג", "ר"),
+    ("שבת פרק כג", "ש"),
+    ("ברכות פרק ד", "ת")
+]
 
 if full_hebrew_name:
     def download_font(url, filename):
@@ -75,6 +102,23 @@ if full_hebrew_name:
                     image.save(image_path)
                     # Resize and position the image
                     c.drawImage(image_path, width / 2 - 0.025 * width, height - 0.3 * height, width=0.05 * width, height=0.015 * height, mask='auto')
+
+                # Draw the box with Hebrew letters and display texts
+                box_width = 4 * inch
+                box_height = len(hebrew_letters) * 0.5 * inch
+                box_x = width / 2 - box_width / 2
+                box_y = height - 0.45 * height - box_height
+                c.setStrokeColor(HexColor("#000000"))
+                c.setFillColor(HexColor("#f0f0f0"))
+                c.rect(box_x, box_y, box_width, box_height, fill=1)
+
+                # Draw the Hebrew letters and display text inside the box
+                c.setFont("SBL_Hebrew", 14)
+                text_x = box_x + 0.1 * inch
+                text_y = box_y + box_height - 0.1 * inch
+                for display_text, letter in hebrew_letters:
+                    c.drawString(text_x, text_y, f"{display_text} {letter}")
+                    text_y -= 0.5 * inch
 
                 c.save()
                 return pdf_file

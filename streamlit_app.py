@@ -8,6 +8,7 @@ import requests
 import os
 from io import BytesIO
 from PIL import Image
+from pdf2image import convert_from_path
 
 st.title("Generate PDF with Hebrew Name")
 
@@ -27,7 +28,6 @@ if full_hebrew_name:
             # Save the font file
             with open(filename, "wb") as f:
                 f.write(response.content)
-            st.info(f"Font downloaded and saved to {filename}.")
         except requests.RequestException as e:
             st.error(f"Failed to download font: {e}")
 
@@ -95,7 +95,11 @@ if full_hebrew_name:
     if os.path.exists(font_path):
         pdf_file = create_pdf(full_hebrew_name)
         if pdf_file:
-            st.write(f"Generated PDF for: {full_hebrew_name}")
+            # Convert the first page of the PDF to an image
+            images = convert_from_path(pdf_file, first_page=0, last_page=1)
+            if images:
+                st.image(images[0], caption='PDF Preview', use_column_width=True)
+
             with open(pdf_file, "rb") as f:
                 st.download_button(label="Download PDF", file_name="Hebrew_Name.pdf", data=f, mime="application/pdf")
     else:

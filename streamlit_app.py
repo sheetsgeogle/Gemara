@@ -45,7 +45,7 @@ def reverse_hebrew(text):
     return text[::-1]
 
 def create_pdf(name):
-    pdf_file = "Hebrew_Name.pdf"  # Use a relative path or an appropriate location
+    pdf_file = BytesIO()  # Use BytesIO to create an in-memory PDF
     font_path = "SBL_Hbrw (1).ttf"  # Use a relative path or an appropriate location
     try:
         if os.path.exists(font_path):
@@ -76,6 +76,7 @@ def create_pdf(name):
                 c.drawImage(image_path, width / 2 - 0.025 * width, height - 0.3 * height, width=0.05 * width, height=0.015 * height, mask='auto')
 
             c.save()
+            pdf_file.seek(0)  # Rewind the BytesIO object to the beginning
             return pdf_file
         else:
             st.error(f"Font file not found at {font_path}.")
@@ -95,9 +96,7 @@ if st.button("Download PDF"):
         if full_hebrew_name:
             pdf_file = create_pdf(full_hebrew_name)
             if pdf_file:
-                st.write(f"Generated PDF for: {full_hebrew_name}")
-                with open(pdf_file, "rb") as f:
-                    st.download_button(label="Download PDF", file_name="Hebrew_Name.pdf", data=f, mime="application/pdf")
+                st.download_button(label="Download PDF", file_name="Hebrew_Name.pdf", data=pdf_file, mime="application/pdf")
         else:
             st.error("Please enter a Hebrew name to generate the PDF.")
     else:

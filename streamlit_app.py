@@ -7,6 +7,7 @@ from reportlab.pdfbase import pdfmetrics
 import requests
 import os
 from io import BytesIO
+from PIL import Image  # Import Image from PIL
 
 st.title("Generate and Download PDF with Hebrew Name")
 
@@ -66,8 +67,8 @@ def create_pdf(name):
             image_url = "https://github.com/sheetsgeogle/Gemara/raw/main/test2.png"
             image_file = download_image(image_url)
             if image_file:
-                image_path = "swirl_border.png"
                 image = Image.open(image_file).convert("RGBA")
+                image_path = "swirl_border.png"
                 image.save(image_path)
                 # Resize and position the image
                 c.drawImage(image_path, width / 2 - 0.025 * width, height - 0.3 * height, width=0.05 * width, height=0.015 * height, mask='auto')

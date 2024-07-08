@@ -91,7 +91,7 @@ font_url = "https://github.com/sheetsgeogle/Gemara/raw/main/SBL_Hbrw%20(1).ttf"
 font_path = "SBL_Hbrw (1).ttf"  # Use a relative path or an appropriate location
 download_font(font_url, font_path)
 
-# Single button to generate and download PDF
+# Generate and download PDF with a single button
 if st.button("Generate and Download PDF"):
     if full_hebrew_name:
         pdf_file = create_pdf(full_hebrew_name)
@@ -103,12 +103,16 @@ if st.button("Generate and Download PDF"):
             # Create download link using JavaScript
             download_link = f"data:application/pdf;base64,{pdf_base64}"
             
-            # Use Markdown to create a download link and JavaScript to trigger it
+            # Use HTML and JavaScript to trigger the download
             st.markdown(f"""
+                <html>
+                <body>
                 <a href="{download_link}" download="Hebrew_Name.pdf" id="download_link">Download PDF</a>
                 <script>
                 document.getElementById('download_link').click();
                 </script>
+                </body>
+                </html>
             """, unsafe_allow_html=True)
     else:
         st.error("Please enter a Hebrew name to generate the PDF.")

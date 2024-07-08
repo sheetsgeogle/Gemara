@@ -8,11 +8,16 @@ import requests
 import os
 from io import BytesIO
 from PIL import Image
+import re
 
 st.title("Generate and Download PDF with Hebrew Name")
 
 # Full Hebrew Name input with placeholder
 full_hebrew_name = st.text_input("Full Hebrew Name", placeholder="מנחם מענדל")
+
+def is_hebrew(text):
+    # Check if the text contains Hebrew characters
+    return bool(re.search(r'[\u0590-\u05FF]', text))
 
 def download_font(url, filename):
     try:
@@ -110,15 +115,18 @@ font_url = "https://github.com/sheetsgeogle/Gemara/raw/main/SBL_Hbrw%20(1).ttf"
 font_path = "SBL_Hbrw (1).ttf"  # Use a relative path or an appropriate location
 download_font(font_url, font_path)
 
-# Generate and download PDF with a single button
+# Validate and generate PDF
 if full_hebrew_name:
-    pdf_file = create_pdf(full_hebrew_name)
-    if pdf_file:
-        st.download_button(
-            label="Generate and Download PDF",
-            data=pdf_file,
-            file_name="Hebrew_Name.pdf",
-            mime="application/pdf"
-        )
+    if is_hebrew(full_hebrew_name):
+        pdf_file = create_pdf(full_hebrew_name)
+        if pdf_file:
+            st.download_button(
+                label="Generate and Download PDF",
+                data=pdf_file,
+                file_name="Hebrew_Name.pdf",
+                mime="application/pdf"
+            )
+        else:
+            st.error("Error generating the PDF.")
     else:
-        st.error("Error generating the PDF.")
+        st.error("Please enter a name in Hebrew.")

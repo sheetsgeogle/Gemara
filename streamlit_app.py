@@ -91,18 +91,21 @@ font_url = "https://github.com/sheetsgeogle/Gemara/raw/main/SBL_Hbrw%20(1).ttf"
 font_path = "SBL_Hbrw (1).ttf"  # Use a relative path or an appropriate location
 download_font(font_url, font_path)
 
-# Generate and download PDF with a single button
+# Single button to generate and download PDF
 if st.button("Generate and Download PDF"):
     if full_hebrew_name:
         pdf_file = create_pdf(full_hebrew_name)
         if pdf_file:
-            # Encode the PDF file to base64
+            # Convert PDF to base64
             pdf_base64 = base64.b64encode(pdf_file.read()).decode('utf-8')
             pdf_file.close()  # Close the BytesIO object
             
             # Create download link using JavaScript
+            download_link = f"data:application/pdf;base64,{pdf_base64}"
+            
+            # Use Markdown to create a download link and JavaScript to trigger it
             st.markdown(f"""
-                <a href="data:application/pdf;base64,{pdf_base64}" download="Hebrew_Name.pdf" id="download_link"></a>
+                <a href="{download_link}" download="Hebrew_Name.pdf" id="download_link">Download PDF</a>
                 <script>
                 document.getElementById('download_link').click();
                 </script>

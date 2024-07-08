@@ -90,13 +90,18 @@ font_url = "https://github.com/sheetsgeogle/Gemara/raw/main/SBL_Hbrw%20(1).ttf"
 font_path = "SBL_Hbrw (1).ttf"  # Use a relative path or an appropriate location
 download_font(font_url, font_path)
 
-if st.button("Download PDF"):
+if st.button("Generate and Download PDF"):
     # Check if the font file exists after download
     if os.path.exists(font_path):
         if full_hebrew_name:
             pdf_file = create_pdf(full_hebrew_name)
             if pdf_file:
-                st.download_button(label="Download PDF", file_name="Hebrew_Name.pdf", data=pdf_file, mime="application/pdf")
+                st.download_button(
+                    label="Download PDF",
+                    data=pdf_file,
+                    file_name="Hebrew_Name.pdf",
+                    mime="application/pdf"
+                )
         else:
             st.error("Please enter a Hebrew name to generate the PDF.")
     else:

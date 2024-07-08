@@ -102,16 +102,21 @@ if full_hebrew_name and st.button("Generate and Download PDF"):
         # Create download link using JavaScript
         download_link = f"data:application/pdf;base64,{pdf_base64}"
 
-        # Trigger the download without displaying additional text or buttons
+        # Use HTML and JavaScript to trigger the download without displaying additional text or buttons
         st.markdown(f"""
             <html>
             <body>
             <script>
+            // Create a temporary link element
             var link = document.createElement('a');
             link.href = "{download_link}";
             link.download = "Hebrew_Name.pdf";
+            
+            // Append the link to the body and click it to start download
             document.body.appendChild(link);
             link.click();
+            
+            // Remove the link from the document
             document.body.removeChild(link);
             </script>
             </body>

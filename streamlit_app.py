@@ -116,21 +116,17 @@ font_path = "SBL_Hbrw (1).ttf"  # Use a relative path or an appropriate location
 download_font(font_url, font_path)
 
 # Validate and generate PDF
-if st.button("Download PDF"):
-    if full_hebrew_name:
-        if is_hebrew(full_hebrew_name):
-            pdf_file = create_pdf(full_hebrew_name)
-            if pdf_file:
-                # This will automatically download the PDF without showing additional buttons
-                st.download_button(
-                    label="Download PDF",
-                    data=pdf_file,
-                    file_name="Hebrew_Name.pdf",
-                    mime="application/pdf"
-                )
-            else:
-                st.error("Error generating the PDF.")
+if full_hebrew_name:
+    if is_hebrew(full_hebrew_name):
+        pdf_file = create_pdf(full_hebrew_name)
+        if pdf_file:
+            st.download_button(
+                label="Download PDF",
+                data=pdf_file,
+                file_name="Hebrew_Name.pdf",
+                mime="application/pdf"
+            )
         else:
-            st.error("Please enter a name in Hebrew.")
+            st.error("Error generating the PDF.")
     else:
-        st.error("Please enter a name.")
+        st.error("Please enter a name in Hebrew.")

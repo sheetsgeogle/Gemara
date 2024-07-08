@@ -8,7 +8,6 @@ import requests
 import os
 from io import BytesIO
 from PIL import Image
-import base64
 
 st.title("Generate and Download PDF with Hebrew Name")
 
@@ -92,27 +91,12 @@ font_path = "SBL_Hbrw (1).ttf"  # Use a relative path or an appropriate location
 download_font(font_url, font_path)
 
 # Generate and download PDF with a single button
-if st.button("Generate and Download PDF"):
-    if full_hebrew_name:
-        pdf_file = create_pdf(full_hebrew_name)
-        if pdf_file:
-            # Convert PDF to base64
-            pdf_base64 = base64.b64encode(pdf_file.read()).decode('utf-8')
-            pdf_file.close()  # Close the BytesIO object
-            
-            # Create download link using JavaScript
-            download_link = f"data:application/pdf;base64,{pdf_base64}"
-            
-            # Use HTML and JavaScript to trigger the download
-            st.markdown(f"""
-                <html>
-                <body>
-                <a href="{download_link}" download="Hebrew_Name.pdf" id="download_link">Download PDF</a>
-                <script>
-                document.getElementById('download_link').click();
-                </script>
-                </body>
-                </html>
-            """, unsafe_allow_html=True)
-    else:
-        st.error("Please enter a Hebrew name to generate the PDF.")
+if full_hebrew_name and st.button("Generate and Download PDF"):
+    pdf_file = create_pdf(full_hebrew_name)
+    if pdf_file:
+        st.download_button(
+            label="Download PDF",
+            data=pdf_file,
+            file_name="Hebrew_Name.pdf",
+            mime="application/pdf"
+        )

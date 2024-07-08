@@ -78,10 +78,8 @@ if full_hebrew_name and st.button("Generate and Download PDF"):
         pdf_base64 = base64.b64encode(pdf_file.read()).decode('utf-8')
         pdf_file.close()  # Close the BytesIO object
 
-        # Create the download link using JavaScript
-        download_link = f"data:application/pdf;base64,{pdf_base64}"
-
         # Embed JavaScript to automatically trigger the download
+        download_link = f"data:application/pdf;base64,{pdf_base64}"
         st.markdown(f"""
             <html>
             <body>

@@ -7,7 +7,6 @@ from reportlab.pdfbase import pdfmetrics
 import requests
 import os
 from io import BytesIO
-import base64
 
 st.title("Generate and Download PDF with Hebrew Name")
 
@@ -71,24 +70,14 @@ font_path = "SBL_Hbrw (1).ttf"  # Use a relative path or an appropriate location
 download_font(font_url, font_path)
 
 # Generate and download PDF with a single button
-if full_hebrew_name and st.button("Generate and Download PDF"):
+if full_hebrew_name:
     pdf_file = create_pdf(full_hebrew_name)
     if pdf_file:
-        # Convert PDF to base64
-        pdf_base64 = base64.b64encode(pdf_file.read()).decode('utf-8')
-        pdf_file.close()  # Close the BytesIO object
-
-        # Embed JavaScript to automatically trigger the download
-        download_link = f"data:application/pdf;base64,{pdf_base64}"
-        st.markdown(f"""
-            <html>
-            <body>
-            <a id="downloadLink" href="{download_link}" download="Hebrew_Name.pdf"></a>
-            <script>
-                document.getElementById('downloadLink').click();
-            </script>
-            </body>
-            </html>
-        """, unsafe_allow_html=True)
+        st.download_button(
+            label="Generate and Download PDF",
+            data=pdf_file,
+            file_name="Hebrew_Name.pdf",
+            mime="application/pdf"
+        )
     else:
         st.error("Error generating the PDF.")

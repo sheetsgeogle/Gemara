@@ -8,6 +8,7 @@ import requests
 import os
 from io import BytesIO
 from PIL import Image
+import base64
 
 st.title("Generate and Download PDF with Hebrew Name")
 
@@ -95,13 +96,19 @@ if st.button("Generate and Download PDF"):
     if full_hebrew_name:
         pdf_file = create_pdf(full_hebrew_name)
         if pdf_file:
-            # Provide the PDF for download
-            st.download_button(
-                label="Download PDF",
-                data=pdf_file,
-                file_name="Hebrew_Name.pdf",
-                mime="application/pdf",
-                key="unique_key_for_download_button"
-            )
+            # Encode the PDF file to base64
+            pdf_base64 = base64.b64encode(pdf_file.read()).decode('utf-8')
+            pdf_file.close()  # Close the BytesIO object
+            
+            # Create download link using JavaScript
+            download_link = f'<a href="data:application/pdf;base64,{pdf_base64}" download="Hebrew_Name.pdf">Click here to download your PDF</a>'
+            st.markdown(download_link, unsafe_allow_html=True)
+            
+            # Optional: Automatically trigger download using JavaScript
+            st.markdown("""
+                <script>
+                document.querySelector('a').click();
+                </script>
+            """, unsafe_allow_html=True)
     else:
         st.error("Please enter a Hebrew name to generate the PDF.")

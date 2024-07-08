@@ -10,7 +10,15 @@ from io import BytesIO
 from PIL import Image
 import re
 
-st.title("Mishnayos for Yahrtzeit")
+# Set favicon
+st.markdown(
+    """
+    <link rel="icon" href="https://github.com/sheetsgeogle/Gemara/raw/main/test2.png" type="image/png">
+    """,
+    unsafe_allow_html=True
+)
+
+st.title("Generate and Download PDF with Hebrew Name")
 
 # Full Hebrew Name input with placeholder
 full_hebrew_name = st.text_input("Full Hebrew Name", placeholder="e.g. מנחם מענדל")
@@ -46,18 +54,6 @@ def download_image(url):
 def reverse_hebrew(text):
     return text[::-1]
 
-def get_dynamic_font_size(text, max_width, font_name):
-    # Try different font sizes and see what fits within max_width
-    font_size = 86
-    while font_size > 10:
-        c = canvas.Canvas(BytesIO(), pagesize=letter)
-        c.setFont(font_name, font_size)
-        text_width = c.stringWidth(text)
-        if text_width < max_width:
-            return font_size
-        font_size -= 1
-    return 10  # Minimum font size
-
 def create_pdf(name):
     pdf_file = BytesIO()  # Use BytesIO to create an in-memory PDF
     font_path = "SBL_Hbrw (1).ttf"  # Use a relative path or an appropriate location
@@ -74,16 +70,10 @@ def create_pdf(name):
             black_text = "םשה תויתוא לש תינשמה יקרפ"
             c.drawCentredString(width / 2, height - 100, black_text)
 
-            # Determine the maximum width for the Hebrew name text
-            max_name_width = 0.9 * width  # Allow some margin
-
-            # Determine the appropriate font size
-            font_size = get_dynamic_font_size(reverse_hebrew(name), max_name_width, "SBL_Hebrew")
-            c.setFont("SBL_Hebrew", font_size)
-            c.setFillColor(HexColor("#be9a63"))
-
             # Draw the gold text adjusted upwards
             reversed_name = reverse_hebrew(name)
+            c.setFont("SBL_Hebrew", 86)
+            c.setFillColor(HexColor("#be9a63"))
             c.drawCentredString(width / 2, height - 180, reversed_name)  # Adjusted y-coordinate
 
             # Download and draw the swirl border image
@@ -138,12 +128,10 @@ if full_hebrew_name:
     if is_hebrew(full_hebrew_name):
         pdf_file = create_pdf(full_hebrew_name)
         if pdf_file:
-            # Define the filename with "the name" before the Hebrew name
-            file_name = f"Mishnayos for the name {full_hebrew_name}.pdf"
             st.download_button(
-                label="Download PDF",
+                label="Generate and Download PDF",
                 data=pdf_file,
-                file_name=file_name,
+                file_name="Hebrew_Name.pdf",
                 mime="application/pdf"
             )
         else:

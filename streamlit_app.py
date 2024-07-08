@@ -76,8 +76,8 @@ def create_pdf(name):
                 img_width, img_height = image.size
 
                 # Determine scale to fit the image in the desired area while preserving aspect ratio
-                max_width = 0.05 * width
-                max_height = 0.015 * height
+                max_width = 0.07 * width  # Increased size
+                max_height = 0.02 * height  # Increased size
                 aspect_ratio = img_width / img_height
 
                 if img_width > max_width or img_height > max_height:

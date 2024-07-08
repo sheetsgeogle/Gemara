@@ -28,6 +28,15 @@ def download_font(url, filename):
     except requests.RequestException as e:
         st.error(f"Failed to download font: {e}")
 
+def download_image(url):
+    try:
+        response = requests.get(url)
+        response.raise_for_status()  # Raise an exception for HTTP errors
+        return BytesIO(response.content)
+    except requests.RequestException as e:
+        st.error(f"Failed to download image: {e}")
+        return None
+
 def reverse_hebrew(text):
     return text[::-1]
 
@@ -52,6 +61,16 @@ def create_pdf(name):
             c.setFont("SBL_Hebrew", 86)
             c.setFillColor(HexColor("#be9a63"))
             c.drawCentredString(width / 2, height - 180, reversed_name)  # Adjusted y-coordinate
+
+            # Download and draw the swirl border image
+            image_url = "https://github.com/sheetsgeogle/Gemara/raw/main/test2.png"
+            image_file = download_image(image_url)
+            if image_file:
+                image_path = "swirl_border.png"
+                image = Image.open(image_file).convert("RGBA")
+                image.save(image_path)
+                # Resize and position the image
+                c.drawImage(image_path, width / 2 - 0.025 * width, height - 0.3 * height, width=0.05 * width, height=0.015 * height, mask='auto')
 
             # Save the PDF
             c.save()

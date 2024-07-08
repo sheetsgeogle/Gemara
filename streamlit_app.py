@@ -9,7 +9,7 @@ import os
 from io import BytesIO
 from PIL import Image
 
-st.title("Generate PDF with Hebrew Name")
+st.title("Generate and Download PDF with Hebrew Name")
 
 # Full Hebrew Name input with placeholder
 full_hebrew_name = st.text_input("Full Hebrew Name", placeholder="מנחם מענדל")
@@ -98,7 +98,7 @@ if st.button("Generate and Download PDF"):
             pdf_file = create_pdf(full_hebrew_name)
             if pdf_file:
                 st.download_button(
-                    label="Click to Download",
+                    label="Download PDF",
                     data=pdf_file,
                     file_name="Hebrew_Name.pdf",
                     mime="application/pdf"

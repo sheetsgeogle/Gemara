@@ -7,7 +7,6 @@ from reportlab.pdfbase import pdfmetrics
 import requests
 import os
 from io import BytesIO
-from PIL import Image
 import base64
 
 st.title("Generate and Download PDF with Hebrew Name")
@@ -29,18 +28,6 @@ def download_font(url, filename):
             f.write(response.content)
     except requests.RequestException as e:
         st.error(f"Failed to download font: {e}")
-
-def download_image(url):
-    try:
-        response = requests.get(url)
-        response.raise_for_status()  # Raise an exception for HTTP errors
-        image = Image.open(BytesIO(response.content)).convert("RGBA")
-        return image
-    except requests.RequestException as e:
-        st.error(f"Failed to download image: {e}")
-    except IOError as e:
-        st.error(f"Failed to open image file: {e}")
-    return None
 
 def reverse_hebrew(text):
     return text[::-1]
@@ -67,15 +54,7 @@ def create_pdf(name):
             c.setFillColor(HexColor("#be9a63"))
             c.drawCentredString(width / 2, height - 180, reversed_name)  # Adjusted y-coordinate
 
-            # Download and draw the swirl border image
-            image_url = "https://github.com/sheetsgeogle/Gemara/raw/main/test2.png"
-            image = download_image(image_url)
-            if image:
-                image_path = "swirl_border.png"
-                image.save(image_path)
-                # Resize and position the image
-                c.drawImage(image_path, width / 2 - 0.025 * width, height - 0.3 * height, width=0.05 * width, height=0.015 * height, mask='auto')
-
+            # Save the PDF
             c.save()
             pdf_file.seek(0)  # Rewind the BytesIO object to the beginning
             return pdf_file
@@ -99,23 +78,14 @@ if full_hebrew_name and st.button("Generate and Download PDF"):
         pdf_base64 = base64.b64encode(pdf_file.read()).decode('utf-8')
         pdf_file.close()  # Close the BytesIO object
 
-        # Create download link using JavaScript
-        download_link = f"data:application/pdf;base64,{pdf_base64}"
-
-        # Embed JavaScript in HTML to trigger download without displaying additional buttons or text
+        # Create the download link
         st.markdown(f"""
-            <html>
-            <body>
+            <a href="data:application/pdf;base64,{pdf_base64}" download="Hebrew_Name.pdf">
+                <button type="button">Download PDF</button>
+            </a>
             <script>
-            var link = document.createElement('a');
-            link.href = "{download_link}";
-            link.download = "Hebrew_Name.pdf";
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
+                document.querySelector('a').click();
             </script>
-            </body>
-            </html>
         """, unsafe_allow_html=True)
     else:
         st.error("Error generating the PDF.")

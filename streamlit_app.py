@@ -99,28 +99,11 @@ if full_hebrew_name and st.button("Generate and Download PDF"):
         pdf_base64 = base64.b64encode(pdf_file.read()).decode('utf-8')
         pdf_file.close()  # Close the BytesIO object
 
-        # Create download link using JavaScript
-        download_link = f"data:application/pdf;base64,{pdf_base64}"
-
-        # Use HTML and JavaScript to trigger the download without displaying additional text or buttons
+        # Provide the file for download
         st.markdown(f"""
-            <html>
-            <body>
-            <script>
-            // Create a temporary link element
-            var link = document.createElement('a');
-            link.href = "{download_link}";
-            link.download = "Hebrew_Name.pdf";
-            
-            // Append the link to the body and click it to start download
-            document.body.appendChild(link);
-            link.click();
-            
-            // Remove the link from the document
-            document.body.removeChild(link);
-            </script>
-            </body>
-            </html>
+            <a href="data:application/pdf;base64,{pdf_base64}" download="Hebrew_Name.pdf">
+                <button>Download PDF</button>
+            </a>
         """, unsafe_allow_html=True)
     else:
         st.error("Error generating the PDF.")

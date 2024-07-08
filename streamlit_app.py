@@ -7,7 +7,7 @@ from reportlab.pdfbase import pdfmetrics
 import requests
 import os
 from io import BytesIO
-from PIL import Image  # Import Image from PIL
+from PIL import Image
 
 st.title("Generate and Download PDF with Hebrew Name")
 
@@ -68,10 +68,31 @@ def create_pdf(name):
             image_file = download_image(image_url)
             if image_file:
                 image = Image.open(image_file).convert("RGBA")
-                image_path = "swirl_border.png"
-                image.save(image_path)
-                # Resize and position the image
-                c.drawImage(image_path, width / 2 - 0.025 * width, height - 0.3 * height, width=0.05 * width, height=0.015 * height, mask='auto')
+                # Save the image temporarily to calculate size
+                temp_image_path = "temp_swirl_border.png"
+                image.save(temp_image_path)
+
+                # Get the size of the image
+                img_width, img_height = image.size
+
+                # Determine scale to fit the image in the desired area while preserving aspect ratio
+                max_width = 0.05 * width
+                max_height = 0.015 * height
+                aspect_ratio = img_width / img_height
+
+                if img_width > max_width or img_height > max_height:
+                    if max_width / aspect_ratio <= max_height:
+                        img_width = max_width
+                        img_height = max_width / aspect_ratio
+                    else:
+                        img_height = max_height
+                        img_width = max_height * aspect_ratio
+                else:
+                    img_width = img_width
+                    img_height = img_height
+
+                # Draw the image on the PDF
+                c.drawImage(temp_image_path, width / 2 - img_width / 2, height - 0.3 * height, width=img_width, height=img_height, mask='auto')
 
             # Save the PDF
             c.save()

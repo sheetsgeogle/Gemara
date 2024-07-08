@@ -13,7 +13,7 @@ import re
 st.title("Generate and Download PDF with Hebrew Name")
 
 # Full Hebrew Name input with placeholder
-full_hebrew_name = st.text_input("Full Hebrew Name", placeholder="מנחם מענדל")
+full_hebrew_name = st.text_input("Full Hebrew Name", placeholder="e.g. מנחם מענדל")
 
 def is_hebrew(text):
     # Check if the text contains Hebrew characters

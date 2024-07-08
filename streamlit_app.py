@@ -120,10 +120,12 @@ if full_hebrew_name:
     if is_hebrew(full_hebrew_name):
         pdf_file = create_pdf(full_hebrew_name)
         if pdf_file:
+            # Define the filename with the Hebrew name
+            file_name = f"Mishnayos for {full_hebrew_name}.pdf"
             st.download_button(
                 label="Download PDF",
                 data=pdf_file,
-                file_name="Hebrew_Name.pdf",
+                file_name=file_name,
                 mime="application/pdf"
             )
         else:
